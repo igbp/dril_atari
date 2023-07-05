@@ -284,9 +284,11 @@ def main():
                 clip_action = action
 
             if args.dril:
-                dril_reward, ensemble_variance = dril.predict_reward(clip_action, obs, envs)
-                raw_reward_hist.append(dril_reward)
-                ensemble_variance_hist.append(ensemble_variance)
+                #dril_reward, ensemble_variance = dril.predict_reward(clip_action, obs, envs)
+                dril_reward = dril.predict_reward(clip_action, obs, envs)
+                
+                #raw_reward_hist.append(dril_reward)
+                #ensemble_variance_hist.append(ensemble_variance)
                 running_uncertainty_reward += dril_reward.view(-1).numpy()
 
             obs, env_reward, done, infos = envs.step(clip_action)
@@ -356,6 +358,7 @@ def main():
 
         value_loss, action_loss, dist_entropy = agent.update(rollouts)
 
+        """
         fname = args.env_name + '_signals.pt'
         dir_path_ens = '/home/giovani/fix/dril/dril/trained_models/ensemble/'
         fpath = os.path.join(dir_path_ens, fname)
@@ -369,7 +372,7 @@ def main():
         input(f'Need to stop here')
         print('*' * 30)
         print('*' * 30)
-
+        """
         rollouts.after_update()
 
         # save for every interval-th episode or for the last epoch
